@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        body
+         {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("{% static '..\static\images\loginbg.jpg' %}"); /* Replace with your own image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .signup-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-left:10%;
+            margin-bottom: 5px; /* Optional: Add margin for spacing */
+        }
+   
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 80%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .success-message {
+            color: #27ae60;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+  
+        .submit-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                max-width: 90%;
+            }
+
+            .form-group input {
+                padding: 10px;
+            }
+        }
+        select {
+            width: 85%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    
+        /* Style the select element when focused */
+        select:focus {
+            border-color: #007BFF; /* Change border color on focus */
+        }
+    </style>
+</head>
+<body>
+    <br><br><br><br>
+    <div class="signup-container">
+        
+        <h2>Sign Up</h2>
+        <form id="signup-form" method="POST" >
+            {% csrf_token %}
+            
+             <div class="form-group">
+			 
+                <label for="role">Select Role</label>
+                <select id="role" name="role" required>
+                    <option value="normal_user">Normal User</option>
+                    <option value="club_user">Club User</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label id="fname1" for="fname1">First Name:</label>
+                 <input type="text" id="fname" name="fname" required><BR>
+                 <span id="fname-error" class="error-message"></span>
+             </div>
+             <div class="form-group">
+                <label id="lname1" for="lname1">Last Name:</label>
+                 <input type="text" id="lname" name="lname" required><BR>
+                 <span id="lname-error" class="error-message"></span>
+             </div>
+
+             <div class="form-group">
+                <label id="dob1" for="dob1">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required><br>
+                <span id="dob-error" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+               <label id="email1" for="email">Email:</label>
+                <input type="email" id="email" name="email" required><BR>
+                <span id="email-error" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <span id="password-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required><br>
+                <span id="confirm-password-error" class="error-message"></span>
+            </div>
+            <button type="submit" class="submit-btn" id="signup-btn">Sign Up</button>
+            <span id="success-message" class="success-message"></span>
+        </form>
+        
+        <p class="signup">Already have an account? Log in here.<a href="{% url 'user_login' %}">login</a></p>
+    </div>
+</head>
+</html>
