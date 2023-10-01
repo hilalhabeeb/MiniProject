@@ -1,14 +1,10 @@
-"""
-This module demonstrates the usage of the datetime module.
-It includes examples of how to work with dates and times.
-"""
+
 from datetime import datetime 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login as auth
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password,check_password
 from .models import Usertable
-
 
 
 # Create your views here.
