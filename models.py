@@ -1,15 +1,82 @@
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self.create_user(email, password, **extra_fields)
 
 class Usertable(AbstractUser):
-    username=models.CharField(max_length=20, blank=True, null=True, unique=False)
+    # Custom fields for your user model
+    username = models.CharField(max_length=20, blank=True, null=True, unique=True)
     role = models.CharField(max_length=25, default="normal_user")
-    email = models.EmailField(primary_key=True, unique=True)
+    email = models.EmailField(primary_key=True, unique=True)  # Email as unique USERNAME_FIELD
     dob = models.DateField(default='2000-01-01')
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    
+    # Custom User Manager
+    objects = CustomUserManager()
 
-    USERNAME_FIELD= 'email'
-    REQUIRED_FIELDS=[]
+    # Additional fields and methods for your custom user model if needed
+
     def __str__(self):
         return self.email
+        
+    
+
+
+class TurfProvider(models.Model):
+    venue_name = models.CharField(max_length=255)
+    email = models.EmailField(primary_key=True, unique=True)
+    contact_number = models.CharField(max_length=15)
+    document = models.FileField(upload_to='documents/')
+    sports_type = models.CharField(
+        max_length=10,
+        choices=[('football', 'Football'), ('cricket', 'Cricket')]
+    )
+    address = models.TextField()
+    location = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False) 
+    random_password = models.CharField(max_length=20, null=True, blank=True)
+    password_updated = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return self.venue_name
+    
+
+class TurfListing(models.Model):
+    turf_provider = models.ForeignKey(TurfProvider, on_delete=models.CASCADE)
+    turf_name = models.CharField(max_length=255)
+    sports_type = models.CharField(
+        max_length=10,
+        choices=[('football', 'Football'), ('cricket', 'Cricket')]
+    )
+    description = models.TextField()
+    price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+    location = models.CharField(max_length=100)
+    is_available = models.BooleanField(default=True)
+    available_from = models.TimeField()
+    available_to = models.TimeField()
+    image = models.ImageField(upload_to='turf_images/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.turf_name
