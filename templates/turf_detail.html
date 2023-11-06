@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turf Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            flex: 1; /* Push the footer to the bottom */
+        }
+
+        .turf-image-container {
+            position: relative;
+        }
+
+        .turf-image {
+            width: 100%;
+            height: 50vh; /* Adjust as needed */
+            object-fit: cover; /* Ensure the image covers the container */
+        }
+        .turf-item {
+            text-align: center;
+            margin: 20px;
+        }
+
+
+
+        .book-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .book-button:hover {
+            background-color: #0056b3;
+        }
+
+
+    .turf-logo {
+        width: 120px;
+        height: 120px;
+        background-color: #333;
+        border: 3px solid rgb(255, 255, 255);
+        border-radius: 50%;
+        position: absolute;
+        bottom: -45px; /* Adjust the positioning as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .turf-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ turf.turf_name }} Details</h1>
+    </div>
+
+    <div class="content">
+        <div class="turf-image-container">
+            <img class="turf-image" src="{{ turf.image.url }}" alt="Turf Image"> 
+
+                <div class="turf-logo">
+                    <img src="{% static 'images/logo12.png' %}" alt="Turf Logo">
+                    
+                </div>
+
+        </div>
+<br><br><br>
+        <div class="turf-item">
+
+            <h3>{{ turf.turf_name }}</h3>
+            <p>Location: {{ turf.location }}</p>
+            <p>Price per Hour: ${{ turf.price_per_hour }} per hour</p>
+            <p>Sports Type: {{ turf.sports_type }}</p>
+            <p>Description: {{ turf.description }}</p>
+            <p>Available From: {{ turf.available_from }}</p>
+            <p>Available To: {{ turf.available_to }}</p>
+
+            <!-- You can display more details here -->
+
+            <!-- Add a "Book Now" button to initiate the booking process -->
+            <a href="#" class="book-button">Book Now</a>
+        </div>
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Turf Provider, Inc.</p>
+    </footer>
+</body>
+</html>
+
+
