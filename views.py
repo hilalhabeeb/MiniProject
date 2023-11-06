@@ -526,29 +526,6 @@ def manage_turf(request, turf_id):
 
 
 
-
-
-#before showing turf details in providerhome
-# def providerhome(request):
-#     if 'email' in request.session:
-#         # Retrieve the TurfProvider object for the authenticated provider
-#         provider = TurfProvider.objects.get(email=request.session['email'])
-#         context = {
-#             'provider_name': provider.venue_name  # Pass the venue name to the template
-#         }
-#         return render(request, 'providerhome.html', context)
-#     else:
-#         return redirect('index')
-
-
-
-
-
-
-
-
-
-
 #before counting values to adminreg quickstat
 # def adminreg(request):
 #     if not request.session.get('email'):
