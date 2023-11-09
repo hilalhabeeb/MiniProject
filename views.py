@@ -158,6 +158,56 @@ def provider_update(request):
 
     return render(request, 'providerupdate.html', context)
 
+# def providerhome(request):
+#     if 'email' in request.session:
+#         # Retrieve the TurfProvider object for the authenticated provider
+#         provider = TurfProvider.objects.get(email=request.session['email'])
+        
+#         # Retrieve the list of turfs associated with the provider
+#         your_turfs = TurfListing.objects.filter(turf_provider=provider)
+        
+#         context = {
+#             'provider_name': provider.venue_name,
+#             'your_turfs': your_turfs  # Pass the list of turfs to the template
+            
+#         }
+
+#         response = render(request, 'providerhome.html', context)
+#         response['Cache-Control'] = 'no-store, must-revalidate'
+#         return response
+        
+#     else:
+#         return redirect('index')
+
+from .models import Booking  # Import the Booking model
+
+# def providerhome(request):
+#     if 'email' in request.session:
+#         # Retrieve the TurfProvider object for the authenticated provider
+#         provider = TurfProvider.objects.get(email=request.session['email'])
+        
+#         # Retrieve the list of turfs associated with the provider
+#         your_turfs = TurfListing.objects.filter(turf_provider=provider)
+
+#         # Retrieve booking details for the provider's turfs
+#         bookings = Booking.objects.filter(turf_listing__in=your_turfs)
+        
+#         context = {
+#             'provider_name': provider.venue_name,
+#             'your_turfs': your_turfs,  # Pass the list of turfs to the template
+#             'bookings': bookings  # Pass the list of booking details to the template
+#         }
+
+#         response = render(request, 'providerhome.html', context)
+#         response['Cache-Control'] = 'no-store, must-revalidate'
+#         return response
+        
+#     else:
+#         return redirect('index')
+    
+
+
+
 def providerhome(request):
     if 'email' in request.session:
         # Retrieve the TurfProvider object for the authenticated provider
@@ -165,11 +215,18 @@ def providerhome(request):
         
         # Retrieve the list of turfs associated with the provider
         your_turfs = TurfListing.objects.filter(turf_provider=provider)
+
+        # Get the count of the provider's turfs
+        turf_count = your_turfs.count()
+
+        # Retrieve booking details for the provider's turfs
+        bookings = Booking.objects.filter(turf_listing__in=your_turfs)
         
         context = {
             'provider_name': provider.venue_name,
-            'your_turfs': your_turfs  # Pass the list of turfs to the template
-            
+            'your_turfs': your_turfs,  # Pass the list of turfs to the template
+            'turf_count': turf_count,  # Pass the count of turfs to the template
+            'bookings': bookings  # Pass the list of booking details to the template
         }
 
         response = render(request, 'providerhome.html', context)
@@ -181,8 +238,9 @@ def providerhome(request):
 
 
 
+
 def userLogout(request):
-    logout(request)
+    logout(request) 
     return redirect('index')
 
 def index2(request):
@@ -465,15 +523,99 @@ def add_turf(request):
 
     return render(request, 'addturf.html', {'form': form})
 
+
+
+
+from datetime import datetime, timedelta
+from django.shortcuts import render, HttpResponseRedirect
+from .models import TurfListing
+
+
+from django.db.models import Q
+
+@login_required
 def turf_detail(request, turf_id):
-    # Retrieve the specific turf using its ID
+    if request.method == 'POST':
+        # Get the selected time slot and date from the form
+        selected_time_slot = request.POST.get('selected_time_slot')
+        selected_date = request.POST.get('booking_date')
+
+        if not selected_time_slot or not selected_date:
+            return HttpResponse("Please select a date and time slot")
+
+        # Split the time slot into start and end times
+        start_time_str, end_time_str = selected_time_slot.split(' - ')
+        start_time = datetime.strptime(start_time_str, '%H:%M').time()
+        end_time = datetime.strptime(end_time_str, '%H:%M').time()
+        turf = TurfListing.objects.get(id=turf_id)
+        total_cost = ((end_time.hour - start_time.hour)+1) * turf.price_per_hour
+
+        user = request.user
+
+        # Check if there are existing bookings for the selected date and time slot
+        existing_bookings = Booking.objects.filter(
+            Q(booking_date=selected_date),
+            Q(start_time__lte=start_time, end_time__gte=start_time) |
+            Q(start_time__lte=end_time, end_time__gte=end_time)
+        )
+
+        if existing_bookings.exists():
+            # Notify the user that the slot is already booked
+            messages.error(request, 'This time slot is already booked. Please choose another time.')
+
+            # You can redirect the user back to the same page or provide a list of available time slots.
+            return redirect('turf_detail', turf_id=turf_id)
+
+        # Create a new booking
+        booking = Booking.objects.create(
+            user=user,
+            turf_listing=turf,
+            turf_provider=turf.turf_provider,
+            booking_date=selected_date,
+            start_time=start_time,
+            end_time=end_time,
+            total_cost=total_cost
+        )
+        messages.success(request, 'Booking was successful!')
+
+        return redirect('booking_history')   # You can define a success URL
+
+    # Your existing code for displaying the turf details
     turf = TurfListing.objects.get(id=turf_id)
-    
+    available_from = turf.available_from
+    available_to = turf.available_to
+    time_slots = []
+
+    while available_from < available_to:
+        time_slots.append(
+            available_from.strftime('%H:%M') + ' - ' + (datetime.combine(datetime.today(), available_from) + timedelta(minutes=59)).strftime('%H:%M')
+        )
+        available_from = (datetime.combine(datetime.today(), available_from) + timedelta(hours=1)).time()
+
     context = {
-        'turf': turf
+        'turf': turf,
+        'time_slots': time_slots
     }
-    
+
     return render(request, 'turf_detail.html', context)
+
+
+
+
+from django.contrib import messages
+
+@login_required
+def booking_history(request):
+    # Retrieve the user's booking history
+    user_bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
+    messages_list = messages.get_messages(request)
+    context = {
+        'user_bookings': user_bookings,
+        'messages': messages_list
+    }
+
+    return render(request, 'booking_history.html', context)
+
 
 
 def manage_turf(request, turf_id):
@@ -497,25 +639,49 @@ def manage_turf(request, turf_id):
 
 
  
+from django.http import JsonResponse
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get('query')
+    results = []
+
+    if query:
+        # Query the database for matching turfs by turf name or location
+        results = TurfListing.objects.filter(
+            Q(turf_name__icontains=query) | Q(location__icontains=query)
+        )
+
+    # Create a list of results with the required attributes
+    search_results = [
+        {
+            'turf_name': turf.turf_name,
+            'location': turf.location,
+            'image': turf.image.url,
+            'id': turf.id,
+            'price_per_hour': turf.price_per_hour,
+        }
+        for turf in results
+    ]
+
+    return JsonResponse(search_results, safe=False)
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#before showing turf details in providerhome
+# def providerhome(request):
+#     if 'email' in request.session:
+#         # Retrieve the TurfProvider object for the authenticated provider
+#         provider = TurfProvider.objects.get(email=request.session['email'])
+#         context = {
+#             'provider_name': provider.venue_name  # Pass the venue name to the template
+#         }
+#         return render(request, 'providerhome.html', context)
+#     else:
+#         return redirect('index')
 
 
 
