@@ -997,29 +997,4 @@ def search(request):
 #                 new_status = request.POST.get(provider.email) == 'on'
 #                 if provider.is_active != new_status:
 #                     provider.is_active = new_status
-#                     provider.save()
 
-
-#                                             # Generate a random password
-#                     random_password = generate_random_password()
-#                     provider.random_password = random_password
-#                     provider.save()
-
-#                         # Send email notification for activation with random password
-#                     send_turf_provider_activation_notification(provider, random_password,new_status)
-
-#     # Retrieve users based on their roles
-#     admin_users = Usertable.objects.filter(role='admin')
-#     normal_users = Usertable.objects.filter(role='normal_user')
-#     club_users = Usertable.objects.filter(role='club_user')
-#     turf_providers = TurfProvider.objects.all()
-
-#     context = {
-#         'admin_users': admin_users,
-#         'normal_users': normal_users,
-#         'club_users': club_users,
-#         'turf_providers': turf_providers,
-#         # Add more role-specific user lists to the context
-#     }
-
-#     return render(request, 'adminreg.html', context)
