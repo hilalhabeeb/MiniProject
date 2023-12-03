@@ -305,19 +305,19 @@ def adminreg(request):
     # Retrieve pending turf providers
     pending_providers = TurfProvider.objects.filter(is_active=False)
     
-    # Calculate user counts here
+   
     admin_count = Usertable.objects.filter(role='admin').count()
     normal_users_count = Usertable.objects.filter(role='normal_user').count()
     club_users_count = Usertable.objects.filter(role='club_user').count()
     turf_providers_count = TurfProvider.objects.count()
 
-    # Generate the pie chart
+   
     pie_chart_image = generate_pie_chart(normal_users_count, club_users_count, turf_providers_count)
 
 
 
 
-    # Retrieve users based on their roles
+
     admin_users = Usertable.objects.filter(role='admin')
     normal_users = Usertable.objects.filter(role='normal_user')
     club_users = Usertable.objects.filter(role='club_user')
