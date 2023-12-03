@@ -273,7 +273,7 @@ def adminreg(request):
         return redirect('index')  # Redirect to the index page if the user is not logged in
 
     if request.method == 'POST':
-        # Handle status change for users
+        
         for user in Usertable.objects.all():
             if user.email in request.POST:
                 new_status = request.POST.get(user.email) == 'on'
@@ -292,17 +292,17 @@ def adminreg(request):
                     provider.is_active = new_status
                     provider.save()
 
-                    # Generate a random password
+                   
                     random_password = generate_random_password()
                     provider.random_password = random_password
                     provider.save()
 
-                    # Send email notification for activation with a random password
+                    
                     send_turf_provider_activation_notification(provider, random_password, new_status)
 
     # Calculate the total count of users (both Usertable and TurfProvider)
     total_users = Usertable.objects.count() + TurfProvider.objects.count()
-    # Retrieve pending turf providers
+   
     pending_providers = TurfProvider.objects.filter(is_active=False)
     
    
