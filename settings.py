@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -131,7 +131,7 @@ AUTH_USER_MODEL="app.Usertable"
 
 # LOGIN_URL = 'user_login'
 
-
+# settings.py
 # session settings
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_NAME = "sessionid"
@@ -145,5 +145,12 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sportigoplayspot@gmail.com'
 EMAIL_HOST_PASSWORD = 'monn ttak owxf hyqq'
 
+# Media settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+RAZORPAY_KEY_ID = 'rzp_test_gfHLcbNXLAqvpT'
+RAZORPAY_KEY_SECRET = '2RsNQRDiZYjnJuYIuMVA4cDr'
+
