@@ -85,7 +85,7 @@ def signup(request):
         user.set_password(password)
         user.save()
 
-        # Add a success message
+        
         messages.success(request, 'Registration successful. You can now log in.')
 
         return redirect('user_login')
@@ -284,7 +284,6 @@ def adminreg(request):
                     # Send email notification for both active and inactive status changes
                     send_status_change_notification(user, new_status)
 
-        # Handle status change for TurfProvider users
         for provider in TurfProvider.objects.all():
             if provider.email in request.POST:
                 new_status = request.POST.get(provider.email) == 'on'
@@ -332,7 +331,7 @@ def adminreg(request):
         'total_users': total_users,
         'pending_providers': pending_providers,
         'pie_chart_image': pie_chart_image,
-        # Add more data as needed
+        
     }
 
     return render(request, 'adminreg.html', context)
@@ -376,7 +375,7 @@ def turfproviderreg(request):
         address = request.POST.get('address')
         location = request.POST.get('location') 
 
-        # Save the data to the TurfProvider model
+        
         turf_provider = TurfProvider(
             venue_name=venue_name,
             email=email,
@@ -399,7 +398,7 @@ def user_profile(request):
     user = request.user
     formatted_dob = user.dob.strftime('%Y-%m-d') if user.dob else ''
 
-    # Retrieve messages from the message framework using the new variable name
+  
     messages = django_messages.get_messages(request)
 
     context = {'user': user, 'formatted_dob': formatted_dob, 'messages': messages}
