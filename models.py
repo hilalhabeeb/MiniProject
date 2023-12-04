@@ -82,7 +82,12 @@ class TurfListing(models.Model):
 
     def __str__(self):
         return self.turf_name
+class TurfImage(models.Model):
+    turf_listing = models.ForeignKey(TurfListing, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='turf_images/')
 
+    def __str__(self):
+        return f"Image for {self.turf_listing.turf_name}"
 
     
 
