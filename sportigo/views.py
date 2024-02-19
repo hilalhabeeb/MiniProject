@@ -46,7 +46,31 @@ def user_login(request):
             return redirect('user_login')  # Redirect back to the signin page if login fails
     return render(request, 'login.html')
 
-
+def register_club_user(request):
+    if request.method == 'POST':
+        club_id = request.POST.get('clubID')
+        club_name = request.POST.get('clubName')
+        email = request.POST.get('email')
+        contact_number = request.POST.get('phone')
+        address = request.POST.get('address')
+        document = request.FILES.get('clubLicense')
+        
+        # Create a new ClubUser instance and save it
+        new_club_user = ClubUser(
+            club_id=club_id,
+            club_name=club_name,
+            email=email,
+            contact_number=contact_number,
+            address=address,
+            document=document,
+        )
+        new_club_user.save()
+        
+        # Optionally, you may want to add logic for sending verification email or setting other fields
+        
+        return render(request, 'index.html', {'registration_success': True})  # Pass a context variable indicating success
+    else:
+        return render(request, 'index.html')  # Render the registration form template
 
 
 
