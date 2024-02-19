@@ -297,7 +297,7 @@ def adminreg(request):
                     
                     send_turf_provider_activation_notification(provider, random_password, new_status)
 
-    # Calculate the total count of users (both Usertable and TurfProvider)
+  
     total_users = Usertable.objects.count() + TurfProvider.objects.count()
    
     pending_providers = TurfProvider.objects.filter(is_active=False)
