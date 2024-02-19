@@ -150,7 +150,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
+#razorpay module
 RAZORPAY_KEY_ID = 'rzp_test_gfHLcbNXLAqvpT'
 RAZORPAY_KEY_SECRET = '2RsNQRDiZYjnJuYIuMVA4cDr'
 
