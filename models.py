@@ -103,3 +103,16 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking for {self.turf_listing.turf_name} by {self.user.email}"
+class ClubUser(models.Model):
+    club_id = models.CharField(max_length=50, unique=True, default='123') 
+    club_name = models.CharField(max_length=255)
+    email = models.EmailField(primary_key=True, unique=True)
+    contact_number = models.CharField(max_length=15)
+    document = models.FileField(upload_to='club_documents/')
+    address = models.TextField()
+    is_active = models.BooleanField(default=False) 
+    random_password = models.CharField(max_length=20, null=True, blank=True)
+    password_updated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.club_name
