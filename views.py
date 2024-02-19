@@ -172,7 +172,6 @@ def provider_update(request):
     return render(request, 'providerupdate.html', context)
 
 
-from .models import Booking 
 
 
 def providerhome(request):
