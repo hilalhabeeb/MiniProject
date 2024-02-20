@@ -114,5 +114,4 @@ class ClubUser(models.Model):
     random_password = models.CharField(max_length=20, null=True, blank=True)
     password_updated = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.club_name
+  
