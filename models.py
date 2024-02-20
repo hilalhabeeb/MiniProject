@@ -26,14 +26,14 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usertable(AbstractUser):
-    # Custom fields for your user model
+   
     username = models.CharField(max_length=20, blank=True, null=True, unique=True)
     role = models.CharField(max_length=25, default="normal_user")
     email = models.EmailField(primary_key=True, unique=True)  # Email as unique USERNAME_FIELD
     dob = models.DateField(default='2000-01-01')
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     
-    # Custom User Manager
+    
     objects = CustomUserManager()
 
     # Additional fields and methods for your custom user model if needed
