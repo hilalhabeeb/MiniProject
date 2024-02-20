@@ -150,7 +150,7 @@ def provider_update(request):
     provider = TurfProvider.objects.get(email=user_email)
 
     if request.method == 'POST':
-        # Handle the form submission
+        
         new_password = request.POST.get('new_password')
 
         # Update the random_password field in the TurfProvider model
