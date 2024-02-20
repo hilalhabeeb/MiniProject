@@ -115,3 +115,5 @@ class ClubUser(models.Model):
     password_updated = models.BooleanField(default=False)
 
   
+  def __str__(self):
+        return self.club_name
