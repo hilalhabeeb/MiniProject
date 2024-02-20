@@ -47,23 +47,7 @@
             <p><strong>Total Cost:</strong> ₹{{ total_cost }}</p>
         </div>
         <!-- Add your payment options/form here -->
-        <form action="{% url 'confirmation' %}" method="post" id="paymentForm">
-            {% csrf_token %}
-                <!-- RAZORPAY INTEGRATION HERE -->
-                <script src="https://checkout.razorpay.com/v1/checkout.js" 
-                data-key="rzp_test_gfHLcbNXLAqvpT" 
-                data-amount="{{ amount }}"
-                data-currency="INR" 
-                data-order_id="{{payment.id}}" 
-                data-buttontext="Pay with Razorpay"
-                data-name="Sportigo Play Spot"
-                data-description="Django and Data Science"
-                data-image="https://example.com/your_logo.jpg" 
-                data-prefill.name="PC"
-                data-prefill.email="sportigoplayspot@gmai.com" 
-                data-callback="{% url 'booking_history' %}"
-                data-theme.color="#F37254"></script>
-        </form>
+
 
     </div>
 
