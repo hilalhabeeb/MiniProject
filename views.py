@@ -351,8 +351,7 @@ def generate_random_password():
     return ''.join(random.choice(characters) for _ in range(password_length))
 
 def send_turf_provider_activation_notification(provider, random_password,new_status):
-    # Implement your email notification logic for TurfProvider activation
-    # Example for activation notification:
+
     subject = 'Turf Provider Account Activation'
     if new_status:
         message = f'Congratulations! Your Turf Provider account is now verified by the admin. Your initial password is: {random_password}'
