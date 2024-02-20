@@ -36,7 +36,7 @@ class Usertable(AbstractUser):
     
     objects = CustomUserManager()
 
-    # Additional fields and methods for your custom user model if needed
+    
 
     def __str__(self):
         return self.email
