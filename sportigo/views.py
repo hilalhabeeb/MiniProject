@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from .models import Usertable
 
 
-# Create your views here.
+
 def index(request):
     return render(request, "index.html")
 
