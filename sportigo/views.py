@@ -55,7 +55,7 @@ def register_club_user(request):
         address = request.POST.get('address')
         document = request.FILES.get('clubLicense')
         
-        # Create a new ClubUser instance and save it
+
         new_club_user = ClubUser(
             club_id=club_id,
             club_name=club_name,
