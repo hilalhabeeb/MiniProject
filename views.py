@@ -119,7 +119,7 @@ def user_login(request):
                 error_message = "Inactive user."
                 messages.error(request, error_message)
         except TurfProvider.DoesNotExist:
-            # User does not exist in TurfProvider, check Usertable
+            
             try:
                 user = Usertable.objects.get(email=email)
                 
