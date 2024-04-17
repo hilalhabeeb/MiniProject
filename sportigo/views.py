@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout, authenticate ,get_user_model
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
-from django.contrib import messages 
+
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
