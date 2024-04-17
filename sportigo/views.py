@@ -33,7 +33,7 @@ from django.shortcuts import render, redirect
 from .models import ClubUser
 
 def generate_pie_chart(normal_users_count, club_users_count, turf_providers_count):
-    # Data
+   
     labels = ['Normal Users', 'Club Users', 'Turf Providers']
     sizes = [normal_users_count, club_users_count, turf_providers_count]
     colors = ['#66b3ff', '#99ff99', '#c2c2f0']
