@@ -39,7 +39,7 @@ def generate_pie_chart(normal_users_count, club_users_count, turf_providers_coun
     colors = ['#66b3ff', '#99ff99', '#c2c2f0']
     explode = (0.1, 0, 0)  # explode 1st slice (Admin)
 
-    # Create a pie chart
+    
     plt.figure(figsize=(6, 4))
     patches, texts, autotexts = plt.pie(
         sizes, explode=explode, labels=labels, colors=colors,
