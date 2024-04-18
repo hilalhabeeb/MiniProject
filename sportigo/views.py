@@ -48,7 +48,6 @@ def generate_pie_chart(normal_users_count, club_users_count, turf_providers_coun
     )
     plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-    # Customize label fonts, if needed
     for text in texts:
         text.set_fontsize(15)
     for autotext in autotexts:
