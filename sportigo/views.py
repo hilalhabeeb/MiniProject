@@ -85,7 +85,6 @@ def signup(request):
         user.set_password(password)
         user.save()
 
-        # Add a success message
         messages.success(request, 'Registration successful. You can now log in.')
 
         return redirect('user_login')
