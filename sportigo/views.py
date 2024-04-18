@@ -117,7 +117,7 @@ def register_club_user(request):
         )
         new_club_user.save()
         
-        # Optionally, you may want to add logic for sending verification email or setting other fields
+      
         
         return candy.render(request, 'index.html', {'registration_success': True})  # Pass a context variable indicating success
     else:
